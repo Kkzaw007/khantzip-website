@@ -14,27 +14,13 @@
             padding: 20px;
         }
 
-        /* ---- Brand Logo & Name (Animated) ---- */
-        .brand-section {
-            text-align: center;
-            margin-bottom: 30px;
-            display: none; 
-        }
+        /* ---- Brand Logo & Name ---- */
+        .brand-section { text-align: center; margin-bottom: 30px; display: none; }
         .brand-logo {
-            width: 90px;
-            height: 90px;
-            border-radius: 50%;
-            object-fit: cover;
-            animation: pulse 2s infinite; 
-            box-shadow: 0 0 15px rgba(56, 189, 248, 0.5);
-            margin-bottom: 10px;
+            width: 90px; height: 90px; border-radius: 50%; object-fit: cover;
+            animation: pulse 2s infinite; box-shadow: 0 0 15px rgba(56, 189, 248, 0.5); margin-bottom: 10px;
         }
-        .brand-name {
-            font-size: 1.3rem;
-            font-weight: bold;
-            color: #38bdf8;
-            margin: 0;
-        }
+        .brand-name { font-size: 1.3rem; font-weight: bold; color: #38bdf8; margin: 0; }
         @keyframes pulse {
             0% { transform: scale(1); box-shadow: 0 0 10px rgba(56, 189, 248, 0.4); }
             50% { transform: scale(1.08); box-shadow: 0 0 25px rgba(56, 189, 248, 0.8); }
@@ -44,124 +30,69 @@
         h2 { margin-bottom: 20px; font-size: 1.4rem; text-align: center;}
 
         /* ---- Home Page Grid ---- */
-        .app-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr); 
-            gap: 15px;
-            max-width: 800px;
-            margin: 0 auto;
-        }
+        .app-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; max-width: 800px; margin: 0 auto; }
         .app-card {
-            background-color: #1e293b;
-            padding: 15px 10px;
-            border-radius: 15px;
-            text-align: center;
-            cursor: pointer;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-            transition: transform 0.2s;
+            background-color: #1e293b; padding: 15px 10px; border-radius: 15px; text-align: center;
+            cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.3); transition: transform 0.2s;
         }
         .app-card:hover { transform: translateY(-5px); }
-        .app-card img {
-            width: 65px;
-            height: 65px;
-            border-radius: 15px;
-            object-fit: cover;
-            margin-bottom: 10px;
-        }
-        .app-card p {
-            margin: 0;
-            font-size: 13px;
-            font-weight: bold;
-        }
+        .app-card img { width: 65px; height: 65px; border-radius: 15px; object-fit: cover; margin-bottom: 10px; }
+        .app-card p { margin: 0; font-size: 13px; font-weight: bold; }
 
         /* ---- Detail Page ---- */
-        #detail-page {
-            display: none;
-            max-width: 600px;
-            margin: 0 auto;
-        }
+        #detail-page { display: none; max-width: 600px; margin: 0 auto; }
         .back-btn {
-            background-color: transparent;
-            color: #cbd5e1;
-            border: 1px solid #475569;
-            padding: 8px 15px;
-            border-radius: 20px;
-            cursor: pointer;
-            margin-bottom: 20px;
-            font-weight: bold;
+            background-color: transparent; color: #cbd5e1; border: 1px solid #475569; padding: 8px 15px;
+            border-radius: 20px; cursor: pointer; margin-bottom: 20px; font-weight: bold;
         }
         .detail-header { text-align: center; margin-bottom: 20px; }
         .detail-header img { width: 90px; border-radius: 20px; margin-bottom: 15px; }
 
         /* ---- Server / Category Selection Tabs ---- */
-        .server-selection-container {
-            margin-bottom: 25px;
-            display: none; /* အမျိုးအစား (၁) ခုထက်ပိုမှ ပြမည် */
-        }
-        .server-label {
-            color: #f43f5e; /* ပုံထဲက SELECT SERVER အရောင် */
-            font-size: 12px;
-            font-weight: bold;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .server-tabs {
-            display: flex;
-            gap: 10px;
-            overflow-x: auto; /* ဖုန်းဖြင့်ကြည့်လျှင် ဘေးတိုက်ရွှေ့ကြည့်ရန် */
-            padding-bottom: 5px;
-        }
-        /* Scrollbar Design */
+        .server-selection-container { margin-bottom: 25px; display: none; }
+        .server-label { color: #f43f5e; font-size: 12px; font-weight: bold; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
+        .server-tabs { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 5px; }
         .server-tabs::-webkit-scrollbar { height: 4px; }
         .server-tabs::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
 
         .server-tab-btn {
-            background-color: #1e293b;
-            color: #cbd5e1;
-            border: 1px solid #334155;
-            padding: 10px 18px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 13px;
-            white-space: nowrap; /* စာသားများ အောက်သို့မဆင်းရန် */
-            transition: all 0.3s ease;
+            background-color: #1e293b; color: #cbd5e1; border: 1px solid #334155; padding: 10px 18px;
+            border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 13px; white-space: nowrap; transition: all 0.3s ease;
         }
-        .server-tab-btn.active {
-            border-color: #10b981; /* ပုံထဲကလို ရွေးထားလျှင် အစိမ်းရောင် */
-            color: #10b981;
-            background-color: rgba(16, 185, 129, 0.1);
-        }
+        .server-tab-btn.active { border-color: #10b981; color: #10b981; background-color: rgba(16, 185, 129, 0.1); }
 
-        /* ---- Pricing Cards ---- */
+        /* ---- Normal Pricing Cards ---- */
         .plan-card {
-            background-color: #1e293b;
-            border-radius: 12px;
-            padding: 15px 20px;
-            margin-bottom: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            background-color: #1e293b; border-radius: 12px; padding: 15px 20px; margin-bottom: 12px;
+            display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 6px rgba(0,0,0,0.2);
         }
         .plan-duration { font-size: 14px; font-weight: bold; color: #e2e8f0; margin: 0 0 5px 0; }
         .plan-price { font-size: 16px; font-weight: bold; color: #38bdf8; margin: 0;}
         .buy-btn {
-            background-color: #0ea5e9;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: background 0.2s;
+            background-color: #0ea5e9; color: white; border: none; padding: 10px 20px;
+            border-radius: 25px; cursor: pointer; font-weight: bold; transition: background 0.2s;
         }
         .buy-btn:hover { background-color: #0284c7; }
+
+        /* ---- Movie Grid Style (၃ ခုတစ်တန်း) ---- */
+        .movie-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+        .movie-card {
+            background-color: #1e293b; border-radius: 12px; padding: 10px; text-align: center;
+            display: flex; flex-direction: column; box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+        .movie-card img { width: 100%; aspect-ratio: 2/3; object-fit: cover; border-radius: 8px; margin-bottom: 10px; }
+        .movie-card h4 { margin: 0 0 5px 0; font-size: 13px; color: #f8fafc; flex-grow: 1; }
+        .movie-card p { font-size: 11px; color: #94a3b8; margin-bottom: 10px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .movie-btn {
+            background-color: #f43f5e; color: white; border: none; padding: 8px 10px; border-radius: 20px;
+            cursor: pointer; font-size: 12px; font-weight: bold; width: 100%; margin-top: auto;
+        }
 
         .loading-text { text-align: center; color: #94a3b8; font-style: italic; margin-top: 20px;}
 
         @media (max-width: 500px) {
             .app-grid { grid-template-columns: repeat(2, 1fr); }
+            .movie-grid { grid-template-columns: repeat(2, 1fr); }
             .plan-card { padding: 12px 15px; }
             .buy-btn { padding: 8px 15px; font-size: 13px;}
         }
@@ -169,20 +100,17 @@
 </head>
 <body>
 
-    <!-- Logo & Name (Home) -->
     <div id="brand-section" class="brand-section">
         <img id="brand-logo" class="brand-logo" src="" alt="Logo">
         <p id="brand-name" class="brand-name"></p>
     </div>
 
-    <!-- Home Page -->
     <div id="home-page">
         <h2>Our Services</h2>
         <div id="loading-home" class="loading-text">Google Sheet မှ ဒေတာများ ယူနေပါသည်...</div>
         <div class="app-grid" id="category-grid"></div>
     </div>
 
-    <!-- Detail Page (App Logo + Server Selection + Prices) -->
     <div id="detail-page">
         <button class="back-btn" onclick="goBack()">← Back</button>
         <div class="detail-header">
@@ -190,54 +118,32 @@
             <h2 id="detail-title">App Name</h2>
         </div>
         
-        <!-- Server Selection Tabs နေရာ (ပုံထဲကအတိုင်း) -->
         <div id="server-selection-container" class="server-selection-container">
-            <div class="server-label">Select Server</div>
-            <div id="server-tabs" class="server-tabs">
-                <!-- Javascript မှ Button များ အလိုအလျောက် ဖြည့်ပေးမည် -->
-            </div>
+            <div class="server-label">Select Category</div>
+            <div id="server-tabs" class="server-tabs"></div>
         </div>
 
-        <div id="loading-detail" class="loading-text" style="display:none;">ဈေးနှုန်းများ ယူနေပါသည်...</div>
-        <div id="price-container">
-            <!-- ရွေးချယ်ထားသော Server ၏ ဈေးနှုန်းများ ဤနေရာတွင် ပေါ်မည် -->
-        </div>
+        <div id="loading-detail" class="loading-text" style="display:none;">ဒေတာများ ယူနေပါသည်...</div>
+        <div id="price-container"></div>
     </div>
 
     <script>
         const SHEET_ID = "13ubLHCnrnkn5e6n5DCZh5SwrHZEjCST9is-DfaenThk"; 
-        const telegramUsername = "Khantzip";
-        let currentAppName = "";
-        
-        // Detail စာမျက်နှာအတွက် Data များကို သိမ်းထားရန် Variable များ
         let globalSheetData = []; 
-        let globalCategories = [];
 
         function fetchSheetRaw(gid, callback) {
             const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=${gid}`;
-            Papa.parse(url, {
-                download: true,
-                header: false, 
-                complete: function(results) {
-                    callback(results.data || []);
-                },
-                error: function(err) {
-                    console.error("Sheet Error:", err);
-                    callback([]);
-                }
-            });
+            Papa.parse(url, { download: true, header: false, complete: function(results) { callback(results.data || []); }, error: function(err) { callback([]); } });
         }
 
         function initApp() {
             fetchSheetRaw("0", function(data) {
                 if(data.length > 0) {
-                    let logoUrl = "";
-                    let brandName = "";
+                    let logoUrl = "", brandName = "";
                     data.forEach(row => {
                         if(row[0] === "main logo" && row[1]) logoUrl = row[1];
                         if(row[0] === "main Name" && row[1]) brandName = row[1];
                     });
-                    
                     if(logoUrl || brandName) {
                         document.getElementById('brand-section').style.display = 'block';
                         if(logoUrl) document.getElementById('brand-logo').src = logoUrl;
@@ -251,11 +157,7 @@
                 document.getElementById('loading-home').style.display = 'none';
                 const grid = document.getElementById('category-grid');
                 grid.innerHTML = '';
-                
-                if (data.length <= 1) {
-                     grid.innerHTML = '<p style="text-align:center; color:#94a3b8; grid-column: span 3;">Data မရှိသေးပါ။</p>';
-                     return;
-                }
+                if (data.length <= 1) { grid.innerHTML = '<p style="text-align:center; color:#94a3b8; grid-column: span 3;">Data မရှိသေးပါ။</p>'; return; }
 
                 for(let i = 1; i < data.length; i++) {
                     const row = data[i];
@@ -264,10 +166,7 @@
                         card.className = 'app-card';
                         const nextTabGid = row[2] ? row[2].trim() : "0";
                         card.onclick = () => openDetail(row[0], row[1], nextTabGid);
-                        card.innerHTML = `
-                            <img src="${row[1]}" alt="${row[0]}">
-                            <p>${row[0]}</p>
-                        `;
+                        card.innerHTML = `<img src="${row[1]}" alt="${row[0]}"><p>${row[0]}</p>`;
                         grid.appendChild(card);
                     }
                 }
@@ -275,11 +174,9 @@
         }
 
         function openDetail(appName, appImage, sheetGid) {
-            currentAppName = appName;
             document.getElementById("brand-section").style.display = "none";
             document.getElementById("home-page").style.display = "none";
             document.getElementById("detail-page").style.display = "block";
-            
             document.getElementById("detail-title").innerText = appName;
             document.getElementById("detail-img").src = appImage;
             
@@ -288,114 +185,141 @@
             const priceContainer = document.getElementById('price-container');
             
             serverSelectionContainer.style.display = 'none';
-            serverTabs.innerHTML = '';
-            priceContainer.innerHTML = '';
+            serverTabs.innerHTML = ''; priceContainer.innerHTML = '';
             document.getElementById('loading-detail').style.display = 'block';
 
             if(sheetGid === "0") {
                 document.getElementById('loading-detail').style.display = 'none';
-                priceContainer.innerHTML = '<p style="text-align:center; color:#94a3b8;">ဒေတာ မချိတ်ဆက်ရသေးပါ။</p>';
-                return;
+                priceContainer.innerHTML = '<p style="text-align:center; color:#94a3b8;">ဒေတာ မချိတ်ဆက်ရသေးပါ။</p>'; return;
             }
 
             fetchSheetRaw(sheetGid, function(data) {
                 document.getElementById('loading-detail').style.display = 'none';
-                if(data.length < 2) {
-                    priceContainer.innerHTML = '<p style="text-align:center; color:#94a3b8;">ဈေးနှုန်းများ မတင်ရသေးပါ။</p>';
-                    return;
-                }
+                if(data.length < 2) { priceContainer.innerHTML = '<p style="text-align:center; color:#94a3b8;">ယခု Server အတွက် ဈေးနှုန်းများ မတင်ရသေးပါ။</p>'; return; }
 
                 globalSheetData = data;
                 const headers = data[0]; 
                 let categories = []; 
 
-                // Google Sheet မှ "Category Name" များနှင့် "Price" Column များကို ရှာဖွေခြင်း
+                // Google Sheet Column များကို အလိုအလျောက် စစ်ဆေးခြင်း (A1, F1, K1 စသည်တို့ကို Tab အဖြစ် ခွဲပေးမည်)
                 for(let i = 0; i < headers.length; i++) {
                     let headerText = headers[i] ? headers[i].trim() : "";
-                    if(headerText && headerText.toLowerCase() !== "price") {
-                        if(i + 1 < headers.length && headers[i+1] && headers[i+1].trim().toLowerCase() === "price") {
-                            categories.push({
-                                name: headerText, // ဥပမာ- မြန်မာ ဆာဗာ
-                                planCol: i,
-                                priceCol: i+1
-                            });
+                    let next1 = (i + 1 < headers.length && headers[i+1]) ? headers[i+1].trim().toLowerCase() : "";
+                    
+                    if(headerText && headerText.toLowerCase() !== "price" && headerText.toLowerCase() !== "picture" && headerText.toLowerCase() !== "story" && headerText.toLowerCase() !== "link" && headerText.toLowerCase() !== "next page") {
+                        
+                        // Normal Pricing Mode လား စစ်မည် (နောက် column က price ဖြစ်ရမည်)
+                        if(next1 === "price") {
+                            let next2 = (i + 2 < headers.length && headers[i+2]) ? headers[i+2].trim().toLowerCase() : "";
+                            categories.push({ type: 'price', name: headerText, col1: i, col2: i+1, col3: (next2 === "next page") ? i+2 : -1 });
+                        } 
+                        // Movie Mode လား စစ်မည် (နောက် column က picture ဖြစ်ရမည်)
+                        else if (next1 === "picture") {
+                            categories.push({ type: 'movie', name: headerText, col1: i, col2: i+1, col3: i+2, col4: i+3 });
                         }
                     }
                 }
 
-                if (categories.length === 0 && headers[0] && headers[1]) {
-                     categories.push({ name: "Plans", planCol: 0, priceCol: 1 });
-                }
-
-                globalCategories = categories;
-
-                // Server (Tab) ရွေးချယ်ရန် Button များ ဖန်တီးခြင်း
                 if(categories.length > 0) {
                     if(categories.length > 1) {
-                        serverSelectionContainer.style.display = 'block'; // Server ခွဲများရှိလျှင် Select Server အပိုင်းကို ပြမည်
-                        
+                        serverSelectionContainer.style.display = 'block'; 
                         categories.forEach((cat, index) => {
                             const btn = document.createElement('button');
-                            // ပထမဆုံး Tab ကို စဖွင့်ချင်းမှာ အစိမ်းရောင် (active) လင်းနေစေမည်
                             btn.className = `server-tab-btn ${index === 0 ? 'active' : ''}`;
-                            
-                            // ပုံထဲကလို အစိမ်းရောင် အမှန်ခြစ်လေးကို ရွေးထားတဲ့ Tab မှာ ထည့်ပေးမည်
                             btn.innerHTML = index === 0 ? `✓ ${cat.name}` : cat.name;
-
-                            // Tab တစ်ခုချင်းစီ နှိပ်လိုက်လျှင် လုပ်ဆောင်မည့် အပိုင်း
                             btn.onclick = () => {
-                                // တခြား Tab များမှ active ကို ဖြုတ်ပြီး နှိပ်လိုက်သော Tab ကို active ပြောင်းမည်
                                 document.querySelectorAll('.server-tab-btn').forEach(b => {
-                                    b.classList.remove('active');
-                                    // အမှန်ခြစ် (✓) များကို ဖယ်မည်
-                                    b.innerText = b.innerText.replace('✓ ', ''); 
+                                    b.classList.remove('active'); b.innerText = b.innerText.replace('✓ ', ''); 
                                 });
-                                btn.classList.add('active');
-                                btn.innerHTML = `✓ ${cat.name}`;
-                                
-                                // ရွေးချယ်လိုက်သော Server အတွက် ဈေးနှုန်းများကို ပြန်လည်ပြသမည်
-                                renderPrices(cat);
+                                btn.classList.add('active'); btn.innerHTML = `✓ ${cat.name}`;
+                                renderData(cat);
                             };
                             serverTabs.appendChild(btn);
                         });
                     }
-                    
-                    // စဖွင့်ချင်းတွင် ပထမဆုံး Category (Server) ၏ ဈေးနှုန်းများကို အလိုအလျောက် ပြသထားမည်
-                    renderPrices(categories[0]);
+                    renderData(categories[0]); // ပထမဆုံး Tab ကို စပြမည်
                 } else {
-                    priceContainer.innerHTML = '<p style="text-align:center; color:#94a3b8;">ယခုရွေးချယ်မှုအတွက် ဈေးနှုန်းများ မတင်ရသေးပါ။</p>';
+                    priceContainer.innerHTML = '<p style="text-align:center; color:#94a3b8;">ဒေတာ ပုံစံမမှန်ကန်ပါ။</p>';
                 }
             });
         }
 
-        // ရွေးချယ်ထားသော Server (Category) ၏ ဈေးနှုန်းများကို ပြသပေးမည့် Function
-        function renderPrices(categoryData) {
+        // လင့်ခ်များ ဖွင့်ရန် Helper Function (ဝယ်မည် / ဇာတ်ကားကြည့်မည် ကိုနှိပ်လျှင်)
+        window.openLink = function(url) {
+            if(url && url.trim() !== "" && url !== "undefined") {
+                window.open(url, '_blank');
+            } else {
+                alert("Link မချိတ်ရသေးပါ / Update လုပ်နေဆဲဖြစ်ပါသည်။");
+            }
+        };
+
+        function renderData(categoryData) {
             const priceContainer = document.getElementById('price-container');
             priceContainer.innerHTML = '';
             
             let items = [];
-            // Google Sheet Data မှ သက်ဆိုင်ရာ Column များကိုသာ ယူမည်
+            // Sheet ထဲရှိ အချက်အလက်များအားလုံးကို ဆွဲယူခြင်း (အတို/အရှည် ပြဿနာမရှိစေရန်)
             for(let r = 1; r < globalSheetData.length; r++) {
-                let plan = globalSheetData[r][categoryData.planCol];
-                let price = globalSheetData[r][categoryData.priceCol];
-                if(plan && price) {
-                    items.push({plan: plan, price: price});
+                let rowData = globalSheetData[r];
+                if (!rowData) continue;
+                
+                let col1Data = rowData.length > categoryData.col1 ? rowData[categoryData.col1] : "";
+                let col2Data = rowData.length > categoryData.col2 ? rowData[categoryData.col2] : "";
+                let col3Data = categoryData.col3 !== -1 && rowData.length > categoryData.col3 ? rowData[categoryData.col3] : "";
+                let col4Data = categoryData.type === 'movie' && rowData.length > categoryData.col4 ? rowData[categoryData.col4] : "";
+                
+                if(col1Data && col1Data.trim() !== "") {
+                    items.push({ title: col1Data, val2: col2Data, val3: col3Data, val4: col4Data });
                 }
             }
 
             if(items.length > 0) {
-                items.forEach(item => {
-                    const planCard = document.createElement('div');
-                    planCard.className = 'plan-card';
-                    planCard.innerHTML = `
-                        <div class="plan-info">
-                            <p class="plan-duration">${item.plan}</p>
-                            <p class="plan-price">${item.price}</p>
-                        </div>
-                        <button class="buy-btn" onclick="buyViaTelegram('${categoryData.name}', '${item.plan}', '${item.price}')">ဝယ်မည်</button>
-                    `;
-                    priceContainer.appendChild(planCard);
-                });
+                // --- ဇာတ်ကားများဖြစ်လျှင် သီးသန့် Grid ဖြင့် ပြမည် ---
+                if (categoryData.type === 'movie') {
+                    
+                    // ✨ နောက်ဆုံးထည့်ထားသော ဇာတ်ကားကို ထိပ်ဆုံးရောက်ရန် ပြောင်းပြန်လှန်ခြင်း (Reverse Logic)
+                    items.reverse(); 
+                    
+                    let gridDiv = document.createElement('div');
+                    gridDiv.className = 'movie-grid';
+                    
+                    items.forEach(item => {
+                        const card = document.createElement('div');
+                        card.className = 'movie-card';
+                        card.innerHTML = `
+                            <img src="${item.val2}" alt="${item.title}" onerror="this.src='https://placehold.co/150x225/1e293b/94a3b8?text=No+Image'">
+                            <h4>${item.title}</h4>
+                            <p>${item.val3 || ''}</p>
+                            <button class="movie-btn" onclick="openLink('${item.val4}')">ဇာတ်ကားကြည့်မည်</button>
+                        `;
+                        gridDiv.appendChild(card);
+                    });
+                    priceContainer.appendChild(gridDiv);
+                } 
+                // --- ရိုးရိုး ဈေးနှုန်းများဖြစ်လျှင် ---
+                else {
+                    items.forEach(item => {
+                        if(item.val2) {
+                            const planCard = document.createElement('div');
+                            planCard.className = 'plan-card';
+                            
+                            // ✨ "ကျပ်" မပါသေးလျှင် Auto ထည့်ပေးခြင်း (Price နောက်တွင် ကျပ် ပေါ်မည်)
+                            let priceText = item.val2.toString().trim();
+                            if(!priceText.includes("ကျပ်") && !priceText.toLowerCase().includes("ks") && !priceText.toLowerCase().includes("kyat")) {
+                                priceText += " ကျပ်";
+                            }
+
+                            planCard.innerHTML = `
+                                <div class="plan-info">
+                                    <p class="plan-duration">${item.title}</p>
+                                    <p class="plan-price">${priceText}</p>
+                                </div>
+                                <button class="buy-btn" onclick="openLink('${item.val3}')">ဝယ်မည်</button>
+                            `;
+                            priceContainer.appendChild(planCard);
+                        }
+                    });
+                }
             } else {
                 priceContainer.innerHTML = '<p style="text-align:center; color:#94a3b8;">ယခု Server အတွက် ဈေးနှုန်းများ မတင်ရသေးပါ။</p>';
             }
@@ -405,17 +329,6 @@
             document.getElementById("brand-section").style.display = "block";
             document.getElementById("home-page").style.display = "block";
             document.getElementById("detail-page").style.display = "none";
-        }
-
-        function buyViaTelegram(categoryName, plan, price) {
-            let message = `မင်္ဂလာပါ၊ ${currentAppName} ဝယ်ချင်လို့ပါ။\n`;
-            if (categoryName && categoryName !== "Plans" && categoryName.toLowerCase() !== "plan") {
-                message += `Server: ${categoryName}\n`;
-            }
-            message += `Plan: ${plan}\nPrice: ${price}`;
-            
-            const telegramLink = `https://t.me/${telegramUsername}?text=${encodeURIComponent(message)}`;
-            window.open(telegramLink, "_blank");
         }
 
         initApp();
