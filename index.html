@@ -18,14 +18,13 @@
         .brand-section {
             text-align: center;
             margin-bottom: 30px;
-            display: none; /* Data ဝင်လာမှ ပြမည် */
+            display: none; 
         }
         .brand-logo {
             width: 90px;
             height: 90px;
             border-radius: 50%;
             object-fit: cover;
-            /* သေးလိုက် ကြီးလိုက် Animation */
             animation: pulse 2s infinite; 
             box-shadow: 0 0 15px rgba(56, 189, 248, 0.5);
             margin-bottom: 10px;
@@ -47,7 +46,7 @@
         /* ---- Home Page Grid ---- */
         .app-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr); /* ကွန်ပျူတာတွင် ၃ ခု */
+            grid-template-columns: repeat(3, 1fr); 
             gap: 15px;
             max-width: 800px;
             margin: 0 auto;
@@ -94,16 +93,48 @@
         .detail-header { text-align: center; margin-bottom: 20px; }
         .detail-header img { width: 90px; border-radius: 20px; margin-bottom: 15px; }
 
-        /* Sub-category Title (e.g., PUBG Global, မြန်မာ ဆာဗာ) */
-        .category-title {
-            color: #f8fafc;
-            border-bottom: 2px solid #38bdf8;
+        /* ---- Server / Category Selection Tabs ---- */
+        .server-selection-container {
+            margin-bottom: 25px;
+            display: none; /* အမျိုးအစား (၁) ခုထက်ပိုမှ ပြမည် */
+        }
+        .server-label {
+            color: #f43f5e; /* ပုံထဲက SELECT SERVER အရောင် */
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .server-tabs {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto; /* ဖုန်းဖြင့်ကြည့်လျှင် ဘေးတိုက်ရွှေ့ကြည့်ရန် */
             padding-bottom: 5px;
-            margin-top: 25px;
-            margin-bottom: 15px;
-            font-size: 1.1rem;
+        }
+        /* Scrollbar Design */
+        .server-tabs::-webkit-scrollbar { height: 4px; }
+        .server-tabs::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
+
+        .server-tab-btn {
+            background-color: #1e293b;
+            color: #cbd5e1;
+            border: 1px solid #334155;
+            padding: 10px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 13px;
+            white-space: nowrap; /* စာသားများ အောက်သို့မဆင်းရန် */
+            transition: all 0.3s ease;
+        }
+        .server-tab-btn.active {
+            border-color: #10b981; /* ပုံထဲကလို ရွေးထားလျှင် အစိမ်းရောင် */
+            color: #10b981;
+            background-color: rgba(16, 185, 129, 0.1);
         }
 
+        /* ---- Pricing Cards ---- */
         .plan-card {
             background-color: #1e293b;
             border-radius: 12px;
@@ -113,7 +144,7 @@
             justify-content: space-between;
             align-items: center;
         }
-        .plan-duration { font-size: 14px; color: #94a3b8; margin: 0 0 5px 0; }
+        .plan-duration { font-size: 14px; font-weight: bold; color: #e2e8f0; margin: 0 0 5px 0; }
         .plan-price { font-size: 16px; font-weight: bold; color: #38bdf8; margin: 0;}
         .buy-btn {
             background-color: #0ea5e9;
@@ -123,13 +154,14 @@
             border-radius: 25px;
             cursor: pointer;
             font-weight: bold;
+            transition: background 0.2s;
         }
+        .buy-btn:hover { background-color: #0284c7; }
 
         .loading-text { text-align: center; color: #94a3b8; font-style: italic; margin-top: 20px;}
 
-        /* ဖုန်းနဲ့ကြည့်ရန် (Mobile Responsive) */
         @media (max-width: 500px) {
-            .app-grid { grid-template-columns: repeat(2, 1fr); /* ဖုန်းဆိုရင် ၂ ခုစီ ပြမည် */ }
+            .app-grid { grid-template-columns: repeat(2, 1fr); }
             .plan-card { padding: 12px 15px; }
             .buy-btn { padding: 8px 15px; font-size: 13px;}
         }
@@ -137,7 +169,7 @@
 </head>
 <body>
 
-    <!-- Logo & Name နေရာ -->
+    <!-- Logo & Name (Home) -->
     <div id="brand-section" class="brand-section">
         <img id="brand-logo" class="brand-logo" src="" alt="Logo">
         <p id="brand-name" class="brand-name"></p>
@@ -150,7 +182,7 @@
         <div class="app-grid" id="category-grid"></div>
     </div>
 
-    <!-- Detail Page -->
+    <!-- Detail Page (App Logo + Server Selection + Prices) -->
     <div id="detail-page">
         <button class="back-btn" onclick="goBack()">← Back</button>
         <div class="detail-header">
@@ -158,21 +190,34 @@
             <h2 id="detail-title">App Name</h2>
         </div>
         
+        <!-- Server Selection Tabs နေရာ (ပုံထဲကအတိုင်း) -->
+        <div id="server-selection-container" class="server-selection-container">
+            <div class="server-label">Select Server</div>
+            <div id="server-tabs" class="server-tabs">
+                <!-- Javascript မှ Button များ အလိုအလျောက် ဖြည့်ပေးမည် -->
+            </div>
+        </div>
+
         <div id="loading-detail" class="loading-text" style="display:none;">ဈေးနှုန်းများ ယူနေပါသည်...</div>
-        <div id="price-container"></div>
+        <div id="price-container">
+            <!-- ရွေးချယ်ထားသော Server ၏ ဈေးနှုန်းများ ဤနေရာတွင် ပေါ်မည် -->
+        </div>
     </div>
 
     <script>
         const SHEET_ID = "13ubLHCnrnkn5e6n5DCZh5SwrHZEjCST9is-DfaenThk"; 
         const telegramUsername = "Khantzip";
         let currentAppName = "";
+        
+        // Detail စာမျက်နှာအတွက် Data များကို သိမ်းထားရန် Variable များ
+        let globalSheetData = []; 
+        let globalCategories = [];
 
-        // Header မပါဘဲ 2D Array ပုံစံဖြင့် Data အကြမ်းဆွဲယူခြင်း (Column အခွဲများအတွက်)
         function fetchSheetRaw(gid, callback) {
             const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=${gid}`;
             Papa.parse(url, {
                 download: true,
-                header: false, // Array အနေနဲ့ ပြန်ထုတ်ပေးရန်
+                header: false, 
                 complete: function(results) {
                     callback(results.data || []);
                 },
@@ -183,14 +228,11 @@
             });
         }
 
-        // စစချင်း လုပ်ဆောင်မည့် Function
         function initApp() {
-            // ၁။ Privacy Tab (GID: 0) မှ Logo နှင့် နာမည် ဆွဲယူခြင်း
             fetchSheetRaw("0", function(data) {
                 if(data.length > 0) {
                     let logoUrl = "";
                     let brandName = "";
-                    // Column A (Index 0) နဲ့ Column B (Index 1) ကို ရှာမည်
                     data.forEach(row => {
                         if(row[0] === "main logo" && row[1]) logoUrl = row[1];
                         if(row[0] === "main Name" && row[1]) brandName = row[1];
@@ -204,7 +246,6 @@
                 }
             });
 
-            // ၂။ Home Tab (GID: 972366933) မှ App များကို ဆွဲယူခြင်း
             const homeGid = "972366933"; 
             fetchSheetRaw(homeGid, function(data) {
                 document.getElementById('loading-home').style.display = 'none';
@@ -216,15 +257,12 @@
                      return;
                 }
 
-                // ပထမကြောင်း (Index 0) က ခေါင်းစဉ်များဖြစ်၍ Index 1 မှစပါမည်
                 for(let i = 1; i < data.length; i++) {
                     const row = data[i];
                     if(row[0] && row[1]) {
                         const card = document.createElement('div');
                         card.className = 'app-card';
-                        
                         const nextTabGid = row[2] ? row[2].trim() : "0";
-                        
                         card.onclick = () => openDetail(row[0], row[1], nextTabGid);
                         card.innerHTML = `
                             <img src="${row[1]}" alt="${row[0]}">
@@ -236,15 +274,21 @@
             });
         }
 
-        // ဈေးနှုန်းစာမျက်နှာ ဖွင့်ခြင်း
         function openDetail(appName, appImage, sheetGid) {
             currentAppName = appName;
+            document.getElementById("brand-section").style.display = "none";
             document.getElementById("home-page").style.display = "none";
             document.getElementById("detail-page").style.display = "block";
+            
             document.getElementById("detail-title").innerText = appName;
             document.getElementById("detail-img").src = appImage;
             
+            const serverSelectionContainer = document.getElementById('server-selection-container');
+            const serverTabs = document.getElementById('server-tabs');
             const priceContainer = document.getElementById('price-container');
+            
+            serverSelectionContainer.style.display = 'none';
+            serverTabs.innerHTML = '';
             priceContainer.innerHTML = '';
             document.getElementById('loading-detail').style.display = 'block';
 
@@ -261,19 +305,17 @@
                     return;
                 }
 
-                const headers = data[0]; // ပထမကြောင်းကို ခေါင်းစဉ်အဖြစ်ယူမည်
+                globalSheetData = data;
+                const headers = data[0]; 
                 let categories = []; 
-                let hasAnyPlan = false;
 
-                // Column များကို စစ်ဆေး၍ အမျိုးအစားခွဲ (Sub-categories) များကို ရှာဖွေခြင်း
+                // Google Sheet မှ "Category Name" များနှင့် "Price" Column များကို ရှာဖွေခြင်း
                 for(let i = 0; i < headers.length; i++) {
                     let headerText = headers[i] ? headers[i].trim() : "";
-                    // Column နာမည်ရှိပြီး "price" မဟုတ်လျှင် ၎င်းကို အမျိုးအစားအမည်အဖြစ် မှတ်မည်
                     if(headerText && headerText.toLowerCase() !== "price") {
-                        // ၎င်း၏ ဘေးကပ်လျက် Column သည် "price" ဖြစ်ရမည်
                         if(i + 1 < headers.length && headers[i+1] && headers[i+1].trim().toLowerCase() === "price") {
                             categories.push({
-                                name: headerText,
+                                name: headerText, // ဥပမာ- မြန်မာ ဆာဗာ
                                 planCol: i,
                                 priceCol: i+1
                             });
@@ -281,80 +323,101 @@
                     }
                 }
 
-                // အကယ်၍ Sub-category များမတွေ့ပါက (ရိုးရိုး Plan / Price သာဖြစ်လျှင်)
                 if (categories.length === 0 && headers[0] && headers[1]) {
                      categories.push({ name: "Plans", planCol: 0, priceCol: 1 });
                 }
 
-                // တွေ့ရှိသော အမျိုးအစားတစ်ခုစီအတွက် UI ဖန်တီးခြင်း
-                categories.forEach(cat => {
-                    let items = [];
-                    // ဒုတိယကြောင်းမှစ၍ အောက်ဆုံးထိ ဒေတာများကို ယူမည်
-                    for(let r = 1; r < data.length; r++) {
-                        let plan = data[r][cat.planCol];
-                        let price = data[r][cat.priceCol];
-                        if(plan && price) {
-                            items.push({plan: plan, price: price});
-                        }
-                    }
+                globalCategories = categories;
 
-                    if(items.length > 0) {
-                        hasAnyPlan = true;
-                        let section = document.createElement('div');
+                // Server (Tab) ရွေးချယ်ရန် Button များ ဖန်တီးခြင်း
+                if(categories.length > 0) {
+                    if(categories.length > 1) {
+                        serverSelectionContainer.style.display = 'block'; // Server ခွဲများရှိလျှင် Select Server အပိုင်းကို ပြမည်
                         
-                        // "Plans" လို့ အလိုအလျောက်ပေးထားတာ မဟုတ်ရင် ခေါင်းစဉ် (Title) တပ်ပေးမည်
-                        if (cat.name !== "Plans" && cat.name.toLowerCase() !== "plan" && cat.name.toLowerCase() !== "category") {
-                            let secTitle = document.createElement('h3');
-                            secTitle.className = 'category-title';
-                            secTitle.innerText = cat.name;
-                            section.appendChild(secTitle);
-                        }
+                        categories.forEach((cat, index) => {
+                            const btn = document.createElement('button');
+                            // ပထမဆုံး Tab ကို စဖွင့်ချင်းမှာ အစိမ်းရောင် (active) လင်းနေစေမည်
+                            btn.className = `server-tab-btn ${index === 0 ? 'active' : ''}`;
+                            
+                            // ပုံထဲကလို အစိမ်းရောင် အမှန်ခြစ်လေးကို ရွေးထားတဲ့ Tab မှာ ထည့်ပေးမည်
+                            btn.innerHTML = index === 0 ? `✓ ${cat.name}` : cat.name;
 
-                        items.forEach(item => {
-                            const planCard = document.createElement('div');
-                            planCard.className = 'plan-card';
-                            planCard.innerHTML = `
-                                <div class="plan-info">
-                                    <p class="plan-duration">${item.plan}</p>
-                                    <p class="plan-price">${item.price}</p>
-                                </div>
-                                <!-- ဝယ်မည် နှိပ်လျှင် Telegram သို့ ပို့မည့် ဒေတာများ -->
-                                <button class="buy-btn" onclick="buyViaTelegram('${cat.name}', '${item.plan}', '${item.price}')">ဝယ်မည်</button>
-                            `;
-                            section.appendChild(planCard);
+                            // Tab တစ်ခုချင်းစီ နှိပ်လိုက်လျှင် လုပ်ဆောင်မည့် အပိုင်း
+                            btn.onclick = () => {
+                                // တခြား Tab များမှ active ကို ဖြုတ်ပြီး နှိပ်လိုက်သော Tab ကို active ပြောင်းမည်
+                                document.querySelectorAll('.server-tab-btn').forEach(b => {
+                                    b.classList.remove('active');
+                                    // အမှန်ခြစ် (✓) များကို ဖယ်မည်
+                                    b.innerText = b.innerText.replace('✓ ', ''); 
+                                });
+                                btn.classList.add('active');
+                                btn.innerHTML = `✓ ${cat.name}`;
+                                
+                                // ရွေးချယ်လိုက်သော Server အတွက် ဈေးနှုန်းများကို ပြန်လည်ပြသမည်
+                                renderPrices(cat);
+                            };
+                            serverTabs.appendChild(btn);
                         });
-                        
-                        priceContainer.appendChild(section);
                     }
-                });
-
-                if(!hasAnyPlan) {
+                    
+                    // စဖွင့်ချင်းတွင် ပထမဆုံး Category (Server) ၏ ဈေးနှုန်းများကို အလိုအလျောက် ပြသထားမည်
+                    renderPrices(categories[0]);
+                } else {
                     priceContainer.innerHTML = '<p style="text-align:center; color:#94a3b8;">ယခုရွေးချယ်မှုအတွက် ဈေးနှုန်းများ မတင်ရသေးပါ။</p>';
                 }
             });
         }
 
+        // ရွေးချယ်ထားသော Server (Category) ၏ ဈေးနှုန်းများကို ပြသပေးမည့် Function
+        function renderPrices(categoryData) {
+            const priceContainer = document.getElementById('price-container');
+            priceContainer.innerHTML = '';
+            
+            let items = [];
+            // Google Sheet Data မှ သက်ဆိုင်ရာ Column များကိုသာ ယူမည်
+            for(let r = 1; r < globalSheetData.length; r++) {
+                let plan = globalSheetData[r][categoryData.planCol];
+                let price = globalSheetData[r][categoryData.priceCol];
+                if(plan && price) {
+                    items.push({plan: plan, price: price});
+                }
+            }
+
+            if(items.length > 0) {
+                items.forEach(item => {
+                    const planCard = document.createElement('div');
+                    planCard.className = 'plan-card';
+                    planCard.innerHTML = `
+                        <div class="plan-info">
+                            <p class="plan-duration">${item.plan}</p>
+                            <p class="plan-price">${item.price}</p>
+                        </div>
+                        <button class="buy-btn" onclick="buyViaTelegram('${categoryData.name}', '${item.plan}', '${item.price}')">ဝယ်မည်</button>
+                    `;
+                    priceContainer.appendChild(planCard);
+                });
+            } else {
+                priceContainer.innerHTML = '<p style="text-align:center; color:#94a3b8;">ယခု Server အတွက် ဈေးနှုန်းများ မတင်ရသေးပါ။</p>';
+            }
+        }
+
         function goBack() {
+            document.getElementById("brand-section").style.display = "block";
             document.getElementById("home-page").style.display = "block";
             document.getElementById("detail-page").style.display = "none";
         }
 
-        // Telegram Checkout
         function buyViaTelegram(categoryName, plan, price) {
             let message = `မင်္ဂလာပါ၊ ${currentAppName} ဝယ်ချင်လို့ပါ။\n`;
-            
-            // Sub-category (ဥပမာ - မြန်မာ ဆာဗာ) ရှိလျှင် ထည့်ရေးပေးမည်
             if (categoryName && categoryName !== "Plans" && categoryName.toLowerCase() !== "plan") {
-                message += `Type: ${categoryName}\n`;
+                message += `Server: ${categoryName}\n`;
             }
-            
             message += `Plan: ${plan}\nPrice: ${price}`;
             
             const telegramLink = `https://t.me/${telegramUsername}?text=${encodeURIComponent(message)}`;
             window.open(telegramLink, "_blank");
         }
 
-        // Web စပွင့်တာနဲ့ အလုပ်လုပ်မည့် Function
         initApp();
     </script>
 </body>
