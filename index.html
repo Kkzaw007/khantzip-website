@@ -1,178 +1,218 @@
 <!DOCTYPE html>
-<html lang="my">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Khantzip ( ခန့်ဇစ် )</title>
+    <title>Khantzip Digital Store</title>
+    <!-- Google Sheet Data ဖတ်ရန်အတွက် PapaParse ကို အသုံးပြုထားပါသည် -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Pyidaungsu', sans-serif, Arial;
-        }
         body {
-            background-color: #f4f6f9;
-            color: #333;
-        }
-        /* Header Section */
-        header {
-            background-color: #ffffff;
-            display: table;
-            width: 100%;
-            padding: 15px 20px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            border-bottom: 2px solid #e1e8ed;
-        }
-        .header-brand {
-            display: table-cell;
-            vertical-align: middle;
-        }
-        .logo-img {
-            width: 45px;
-            height: 45px;
-            border-radius: 8px;
-            vertical-align: middle;
-            margin-right: 12px;
-            object-fit: cover;
-        }
-        .brand-name {
-            font-size: 20px;
-            font-weight: bold;
-            color: #1a202c;
-            display: inline-block;
-            vertical-align: middle;
-        }
-
-        /* Container & Grid Layout */
-        .container {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 0 10px;
-        }
-        .section-title {
-            font-size: 16px;
-            margin-bottom: 15px;
-            color: #4a5568;
-            font-weight: 600;
-        }
-        /* 3-Column Grid setup */
-        .grid-container {
-            display: table;
-            width: 100%;
-            table-layout: fixed;
-            border-spacing: 8px;
-        }
-        .grid-row {
-            display: table-row;
-        }
-        .card {
-            display: table-cell;
-            background: #ffffff;
-            border-radius: 10px;
-            padding: 10px;
-            text-align: center;
-            vertical-align: top;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-            cursor: pointer;
-            width: 33.33%;
-            border: 1px solid #edf2f7;
-        }
-        .card img {
-            width: 100%;
-            height: 85px;
-            object-fit: cover;
-            border-radius: 6px;
-            margin-bottom: 8px;
-        }
-        .card-title {
-            font-size: 13px;
-            font-weight: 600;
-            color: #2d3748;
-            word-break: break-word;
-        }
-
-        /* Responsive Sub-pages Container */
-        #detail-view {
-            display: none;
-            background: #fff;
+            background-color: #0b1120;
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
             padding: 20px;
-            border-radius: 10px;
-            margin-top: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+        h2 { margin-bottom: 20px; font-size: 1.5rem; }
+
+        .app-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+        .app-card {
+            background-color: #1e293b;
+            padding: 15px;
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+        .app-card img {
+            width: 70px;
+            height: 70px;
+            border-radius: 15px;
+            object-fit: cover;
+            margin-bottom: 10px;
+        }
+        .app-card p {
+            margin: 0;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        #detail-page {
+            display: none;
+            max-width: 600px;
+            margin: 0 auto;
         }
         .back-btn {
-            background: #3182ce;
+            background-color: transparent;
+            color: #cbd5e1;
+            border: 1px solid #475569;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        .detail-header { text-align: center; margin-bottom: 30px; }
+        .detail-header img { width: 90px; border-radius: 20px; }
+
+        .plan-card {
+            background-color: #1e293b;
+            border-radius: 12px;
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .plan-duration { font-size: 13px; color: #94a3b8; margin: 0 0 5px 0; }
+        .plan-price { font-size: 16px; font-weight: bold; color: #38bdf8; margin: 0;}
+        .buy-btn {
+            background-color: #0ea5e9;
             color: white;
             border: none;
-            padding: 8px 16px;
-            border-radius: 5px;
+            padding: 10px 25px;
+            border-radius: 25px;
             cursor: pointer;
-            margin-bottom: 15px;
-            font-size: 14px;
+            font-weight: bold;
+        }
+
+        /* Loading စာသားအတွက် Design */
+        .loading-text { text-align: center; color: #94a3b8; font-style: italic; margin-top: 20px;}
+
+        @media (max-width: 600px) {
+            .app-grid { grid-template-columns: repeat(2, 1fr); }
         }
     </style>
 </head>
 <body>
 
-    <!-- Header with Logo and Name -->
-    <header>
-        <div class="header-brand">
-            <!-- ImgBB Logo Link Placeholder -->
-            <img src="https://i.ibb.co/sample-logo.png" alt="Khantzip Logo" class="logo-img" id="site-logo">
-            <span class="brand-name">Khantzip ( ခန့်ဇစ် )</span>
-        </div>
-    </header>
+    <!-- Home Page -->
+    <div id="home-page">
+        <h2>Our Services</h2>
+        <div id="loading-home" class="loading-text">Google Sheet မှ ဒေတာများ ယူနေပါသည်...</div>
+        <div class="app-grid" id="category-grid"></div>
+    </div>
 
-    <div class="container">
-        <!-- Categories View (Main Page) -->
-        <div id="main-view">
-            <div class="section-title">ဝန်ဆောင်မှုနှင့် ဆော့ဖ်ဝဲလ် အမျိုးအစားများ</div>
-            
-            <div class="grid-container" id="category-grid">
-                <!-- Row 1 (3 items) -->
-                <div class="grid-row">
-                    <div class="card" onclick="openCategory('software')">
-                        <img src="https://via.placeholder.com/150" alt="Software">
-                        <div class="card-title">Software များ</div>
-                    </div>
-                    <div class="card" onclick="openCategory('vpn')">
-                        <img src="https://via.placeholder.com/150" alt="VPN">
-                        <div class="card-title">VPN Accounts</div>
-                    </div>
-                    <div class="card" onclick="openCategory('game')">
-                        <img src="https://via.placeholder.com/150" alt="Game">
-                        <div class="card-title">Game Items</div>
-                    </div>
-                </div>
-            </div>
+    <!-- Detail Page -->
+    <div id="detail-page">
+        <button class="back-btn" onclick="goBack()">← Back</button>
+        <div class="detail-header">
+            <img id="detail-img" src="" alt="App Logo">
+            <h2 id="detail-title">App Name</h2>
         </div>
-
-        <!-- Sub-page View (Items & Prices) -->
-        <div id="detail-view">
-            <button class="back-btn" onclick="showMainView()">← နောက်သို့ပြန်သွားရန်</button>
-            <h2 id="category-heading" style="margin-bottom: 15px;"></h2>
-            <div id="items-content">
-                <!-- Items fetched from Google Sheet will go here -->
-            </div>
-        </div>
+        <div style="margin-bottom: 10px; font-weight: bold;">Pricing Plans</div>
+        
+        <div id="loading-detail" class="loading-text" style="display:none;">ဈေးနှုန်းများ ယူနေပါသည်...</div>
+        <div id="price-list"></div> <!-- Sheet က ဈေးတွေ ဒီနေရာမှာ အော်တိုပေါ်လာပါမယ် -->
     </div>
 
     <script>
-        function openCategory(category) {
-            document.getElementById('main-view').style.display = 'none';
-            document.getElementById('detail-view').style.display = 'block';
-            document.getElementById('category-heading').innerText = category.toUpperCase() + " ပစ္စည်းများနှင့် စျေးနှုန်းများ";
-            
-            // Here JS will fetch data from Google Sheet based on category
-            document.getElementById('items-content').innerHTML = "<p>Google Sheet မှ ဒေတာများ လှမ်းယူနေပါသည်...</p>";
+        // *** ဤနေရာတွင် ပုံထဲမှ သင်၏ Google Sheet ID ကို ထည့်ထားပါသည် ***
+        const SHEET_ID = "13ubLHCnrnkn5e6n5DCZh5SwrHzEjCST9is_DfaenThk"; 
+        const telegramUsername = "Khantzip"; // Telegram Username ပြင်ရန်
+        let currentAppName = "";
+
+        // Sheet ထဲမှ ဒေတာများကို လှမ်းယူသည့် Function
+        function fetchSheetData(sheetName, callback) {
+            const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${sheetName}`;
+            Papa.parse(url, {
+                download: true,
+                header: true,
+                complete: function(results) {
+                    callback(results.data);
+                },
+                error: function(err) {
+                    console.error("Sheet Error:", err);
+                    alert("Sheet Data ယူ၍မရပါ။ 'Publish to web' လုပ်ထားခြင်း ရှိမရှိ စစ်ဆေးပါ။");
+                }
+            });
         }
 
-        function showMainView() {
-            document.getElementById('detail-view').style.display = 'none';
-            document.getElementById('main-view').style.display = 'block';
+        // ပထမစာမျက်နှာ (home tab) ကို ပြသခြင်း
+        function loadHome() {
+            fetchSheetData('home', function(data) {
+                document.getElementById('loading-home').style.display = 'none';
+                const grid = document.getElementById('category-grid');
+                grid.innerHTML = '';
+                
+                data.forEach(row => {
+                    // Category နာမည်နဲ့ ပုံရှိမှသာ ကတ်လေး ဖန်တီးမည်
+                    if(row['Category'] && row['logo picture']) {
+                        const card = document.createElement('div');
+                        card.className = 'app-card';
+                        
+                        // next page tab နာမည်မရှိလျှင် Category နာမည်ကို Tab နာမည်အဖြစ် ယူမည်
+                        const nextTab = row['next page'] ? row['next page'].trim() : row['Category'].trim();
+                        
+                        card.onclick = () => openDetail(row['Category'], row['logo picture'], nextTab);
+                        card.innerHTML = `
+                            <img src="${row['logo picture']}" alt="${row['Category']}">
+                            <p>${row['Category']}</p>
+                        `;
+                        grid.appendChild(card);
+                    }
+                });
+            });
         }
+
+        // ဒုတိယစာမျက်နှာ (အသေးစိတ် ဈေးနှုန်းများ) ကို ပြသခြင်း
+        function openDetail(appName, appImage, sheetTabName) {
+            currentAppName = appName;
+            document.getElementById("home-page").style.display = "none";
+            document.getElementById("detail-page").style.display = "block";
+            
+            document.getElementById("detail-title").innerText = appName;
+            document.getElementById("detail-img").src = appImage;
+            
+            const priceList = document.getElementById('price-list');
+            priceList.innerHTML = '';
+            document.getElementById('loading-detail').style.display = 'block';
+
+            // သက်ဆိုင်ရာ Tab (ဥပမာ - mlbb) မှ Data ယူခြင်း
+            fetchSheetData(sheetTabName, function(data) {
+                document.getElementById('loading-detail').style.display = 'none';
+                let hasPlans = false;
+
+                data.forEach(row => {
+                    // Plan နှင့် Price column ရှိမှသာ ပြမည်
+                    if(row['Plan'] && row['Price']) {
+                        hasPlans = true;
+                        const planCard = document.createElement('div');
+                        planCard.className = 'plan-card';
+                        planCard.innerHTML = `
+                            <div class="plan-info">
+                                <p class="plan-duration">${row['Plan']}</p>
+                                <p class="plan-price">${row['Price']}</p>
+                            </div>
+                            <button class="buy-btn" onclick="buyViaTelegram('${row['Plan']}', '${row['Price']}')">ဝယ်မည်</button>
+                        `;
+                        priceList.appendChild(planCard);
+                    }
+                });
+
+                if(!hasPlans) {
+                    priceList.innerHTML = '<p style="text-align:center; color:#94a3b8;">ယခုရွေးချယ်မှုအတွက် ဈေးနှုန်းများ မတင်ရသေးပါ။</p>';
+                }
+            });
+        }
+
+        function goBack() {
+            document.getElementById("home-page").style.display = "block";
+            document.getElementById("detail-page").style.display = "none";
+        }
+
+        function buyViaTelegram(planDuration, planPrice) {
+            const message = `မင်္ဂလာပါ၊ ${currentAppName} ဝယ်ချင်လို့ပါ။\nPlan: ${planDuration}\nPrice: ${planPrice}`;
+            const telegramLink = `https://t.me/${telegramUsername}?text=${encodeURIComponent(message)}`;
+            window.open(telegramLink, "_blank");
+        }
+
+        // Website စပွင့်တာနဲ့ home page ကို Auto ဆွဲယူပါမည်
+        loadHome();
     </script>
 </body>
-  </html>
-  
+</html>
