@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Khantzip Digital Store</title>
-    <!-- Google Sheet Data ဖတ်ရန်အတွက် PapaParse ကို အသုံးပြုထားပါသည် -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
     <style>
         body {
@@ -42,7 +41,6 @@
             font-weight: bold;
         }
 
-        /* Detail Page ကို မူလက ဖျောက်ထားမည် */
         #detail-page {
             display: none;
             max-width: 600px;
@@ -115,8 +113,9 @@
         const telegramUsername = "Khantzip";
         let currentAppName = "";
 
-        function fetchSheetData(sheetName, callback) {
-            const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${sheetName}`;
+        // Tab နာမည်အစား GID (နံပါတ်) ဖြင့် ဒေတာဆွဲယူခြင်း
+        function fetchSheetDataByGid(gid, callback) {
+            const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=${gid}`;
             Papa.parse(url, {
                 download: true,
                 header: true,
@@ -124,7 +123,7 @@
                     if(results.data && results.data.length > 0) {
                         callback(results.data);
                     } else {
-                         callback([]); // data မရှိရင် empty array ပြန်ပေးမယ်
+                        callback([]);
                     }
                 },
                 error: function(err) {
@@ -136,13 +135,16 @@
         }
 
         function loadHome() {
-            fetchSheetData('home', function(data) {
+            // home Tab ၏ GID ကို သုံးထားပါသည် (ပုံထဲမှ ယူထားသည်မှာ 972366933 ဖြစ်ပါသည်)
+            const homeGid = "972366933"; 
+            
+            fetchSheetDataByGid(homeGid, function(data) {
                 document.getElementById('loading-home').style.display = 'none';
                 const grid = document.getElementById('category-grid');
                 grid.innerHTML = '';
                 
                 if (data.length === 0) {
-                     grid.innerHTML = '<p>Data မရှိသေးပါ။</p>';
+                     grid.innerHTML = '<p style="text-align:center; color:#94a3b8;">Data မရှိသေးပါ။</p>';
                      return;
                 }
 
@@ -151,8 +153,8 @@
                         const card = document.createElement('div');
                         card.className = 'app-card';
                         
-                        // next page တန်ဖိုးရှိရင် အဲ့ဒါကိုသုံးမယ်၊ မရှိရင် Category နာမည်ကို သုံးမယ်
-                        const nextTab = row['next page'] ? row['next page'].trim() : row['Category'].trim();
+                        // နောက်စာမျက်နှာအတွက် GID သို့မဟုတ် Tab နာမည်ကို ဤနေရာတွင် ချိတ်နိုင်သည်
+                        const nextTab = row['next page'] ? row['next page'].trim() : "0";
                         
                         card.onclick = () => openDetail(row['Category'], row['logo picture'], nextTab);
                         card.innerHTML = `
@@ -165,7 +167,7 @@
             });
         }
 
-        function openDetail(appName, appImage, sheetTabName) {
+        function openDetail(appName, appImage, sheetGid) {
             currentAppName = appName;
             document.getElementById("home-page").style.display = "none";
             document.getElementById("detail-page").style.display = "block";
@@ -177,14 +179,15 @@
             priceList.innerHTML = '';
             document.getElementById('loading-detail').style.display = 'block';
 
-            // sheetTabName (ဥပမာ 'mlbb') ကို အသုံးပြုပြီး ဒေတာဆွဲယူမယ်
-            fetchSheetData(sheetTabName, function(data) {
+            // အသေးစိတ်ပြမည့် Tab ၏ GID ဖြင့် ဒေတာဆွဲမည် (သို့မဟုတ် default 0)
+            const targetGid = sheetGid !== "0" ? sheetGid : "0";
+
+            fetchSheetDataByGid(targetGid, function(data) {
                 document.getElementById('loading-detail').style.display = 'none';
                 let hasPlans = false;
 
                 if (data.length > 0) {
                     data.forEach(row => {
-                        // Plan နဲ့ Price column နှစ်ခုလုံး ပါမှသာ ပြမယ်
                         if(row['Plan'] && row['Price']) {
                             hasPlans = true;
                             const planCard = document.createElement('div');
@@ -218,7 +221,6 @@
             window.open(telegramLink, "_blank");
         }
 
-        // စစချင်း loadHome ကို ခေါ်မယ်
         loadHome();
     </script>
 </body>
