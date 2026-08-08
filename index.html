@@ -42,6 +42,7 @@
             font-weight: bold;
         }
 
+        /* Detail Page ကို မူလက ဖျောက်ထားမည် */
         #detail-page {
             display: none;
             max-width: 600px;
@@ -57,7 +58,7 @@
             margin-bottom: 20px;
         }
         .detail-header { text-align: center; margin-bottom: 30px; }
-        .detail-header img { width: 90px; border-radius: 20px; }
+        .detail-header img { width: 90px; border-radius: 20px; margin-bottom: 15px; }
 
         .plan-card {
             background-color: #1e293b;
@@ -80,7 +81,6 @@
             font-weight: bold;
         }
 
-        /* Loading စာသားအတွက် Design */
         .loading-text { text-align: center; color: #94a3b8; font-style: italic; margin-top: 20px;}
 
         @media (max-width: 600px) {
@@ -107,45 +107,51 @@
         <div style="margin-bottom: 10px; font-weight: bold;">Pricing Plans</div>
         
         <div id="loading-detail" class="loading-text" style="display:none;">ဈေးနှုန်းများ ယူနေပါသည်...</div>
-        <div id="price-list"></div> <!-- Sheet က ဈေးတွေ ဒီနေရာမှာ အော်တိုပေါ်လာပါမယ် -->
+        <div id="price-list"></div>
     </div>
 
     <script>
-        // *** ဤနေရာတွင် ပုံထဲမှ သင်၏ Google Sheet ID ကို ထည့်ထားပါသည် ***
         const SHEET_ID = "13ubLHCnrnkn5e6n5DCZh5SwrHzEjCST9is_DfaenThk"; 
-        const telegramUsername = "Khantzip"; // Telegram Username ပြင်ရန်
+        const telegramUsername = "Khantzip";
         let currentAppName = "";
 
-        // Sheet ထဲမှ ဒေတာများကို လှမ်းယူသည့် Function
         function fetchSheetData(sheetName, callback) {
             const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${sheetName}`;
             Papa.parse(url, {
                 download: true,
                 header: true,
                 complete: function(results) {
-                    callback(results.data);
+                    if(results.data && results.data.length > 0) {
+                        callback(results.data);
+                    } else {
+                         callback([]); // data မရှိရင် empty array ပြန်ပေးမယ်
+                    }
                 },
                 error: function(err) {
                     console.error("Sheet Error:", err);
-                    alert("Sheet Data ယူ၍မရပါ။ 'Publish to web' လုပ်ထားခြင်း ရှိမရှိ စစ်ဆေးပါ။");
+                    alert("Sheet Data ယူ၍မရပါ။");
+                    callback([]);
                 }
             });
         }
 
-        // ပထမစာမျက်နှာ (home tab) ကို ပြသခြင်း
         function loadHome() {
             fetchSheetData('home', function(data) {
                 document.getElementById('loading-home').style.display = 'none';
                 const grid = document.getElementById('category-grid');
                 grid.innerHTML = '';
                 
+                if (data.length === 0) {
+                     grid.innerHTML = '<p>Data မရှိသေးပါ။</p>';
+                     return;
+                }
+
                 data.forEach(row => {
-                    // Category နာမည်နဲ့ ပုံရှိမှသာ ကတ်လေး ဖန်တီးမည်
                     if(row['Category'] && row['logo picture']) {
                         const card = document.createElement('div');
                         card.className = 'app-card';
                         
-                        // next page tab နာမည်မရှိလျှင် Category နာမည်ကို Tab နာမည်အဖြစ် ယူမည်
+                        // next page တန်ဖိုးရှိရင် အဲ့ဒါကိုသုံးမယ်၊ မရှိရင် Category နာမည်ကို သုံးမယ်
                         const nextTab = row['next page'] ? row['next page'].trim() : row['Category'].trim();
                         
                         card.onclick = () => openDetail(row['Category'], row['logo picture'], nextTab);
@@ -159,7 +165,6 @@
             });
         }
 
-        // ဒုတိယစာမျက်နှာ (အသေးစိတ် ဈေးနှုန်းများ) ကို ပြသခြင်း
         function openDetail(appName, appImage, sheetTabName) {
             currentAppName = appName;
             document.getElementById("home-page").style.display = "none";
@@ -172,27 +177,29 @@
             priceList.innerHTML = '';
             document.getElementById('loading-detail').style.display = 'block';
 
-            // သက်ဆိုင်ရာ Tab (ဥပမာ - mlbb) မှ Data ယူခြင်း
+            // sheetTabName (ဥပမာ 'mlbb') ကို အသုံးပြုပြီး ဒေတာဆွဲယူမယ်
             fetchSheetData(sheetTabName, function(data) {
                 document.getElementById('loading-detail').style.display = 'none';
                 let hasPlans = false;
 
-                data.forEach(row => {
-                    // Plan နှင့် Price column ရှိမှသာ ပြမည်
-                    if(row['Plan'] && row['Price']) {
-                        hasPlans = true;
-                        const planCard = document.createElement('div');
-                        planCard.className = 'plan-card';
-                        planCard.innerHTML = `
-                            <div class="plan-info">
-                                <p class="plan-duration">${row['Plan']}</p>
-                                <p class="plan-price">${row['Price']}</p>
-                            </div>
-                            <button class="buy-btn" onclick="buyViaTelegram('${row['Plan']}', '${row['Price']}')">ဝယ်မည်</button>
-                        `;
-                        priceList.appendChild(planCard);
-                    }
-                });
+                if (data.length > 0) {
+                    data.forEach(row => {
+                        // Plan နဲ့ Price column နှစ်ခုလုံး ပါမှသာ ပြမယ်
+                        if(row['Plan'] && row['Price']) {
+                            hasPlans = true;
+                            const planCard = document.createElement('div');
+                            planCard.className = 'plan-card';
+                            planCard.innerHTML = `
+                                <div class="plan-info">
+                                    <p class="plan-duration">${row['Plan']}</p>
+                                    <p class="plan-price">${row['Price']}</p>
+                                </div>
+                                <button class="buy-btn" onclick="buyViaTelegram('${row['Plan']}', '${row['Price']}')">ဝယ်မည်</button>
+                            `;
+                            priceList.appendChild(planCard);
+                        }
+                    });
+                }
 
                 if(!hasPlans) {
                     priceList.innerHTML = '<p style="text-align:center; color:#94a3b8;">ယခုရွေးချယ်မှုအတွက် ဈေးနှုန်းများ မတင်ရသေးပါ။</p>';
@@ -211,7 +218,7 @@
             window.open(telegramLink, "_blank");
         }
 
-        // Website စပွင့်တာနဲ့ home page ကို Auto ဆွဲယူပါမည်
+        // စစချင်း loadHome ကို ခေါ်မယ်
         loadHome();
     </script>
 </body>
