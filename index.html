@@ -14,18 +14,28 @@
             padding: 20px;
         }
 
-        /* ---- Brand Logo & Name ---- */
+        /* ---- Brand Logo & Name & Contact Icons ---- */
         .brand-section { text-align: center; margin-bottom: 30px; display: none; }
         .brand-logo {
             width: 90px; height: 90px; border-radius: 50%; object-fit: cover;
             animation: pulse 2s infinite; box-shadow: 0 0 15px rgba(56, 189, 248, 0.5); margin-bottom: 10px;
         }
-        .brand-name { font-size: 1.3rem; font-weight: bold; color: #38bdf8; margin: 0; }
+        .brand-name { font-size: 1.3rem; font-weight: bold; color: #38bdf8; margin: 0 0 12px 0; }
         @keyframes pulse {
             0% { transform: scale(1); box-shadow: 0 0 10px rgba(56, 189, 248, 0.4); }
             50% { transform: scale(1.08); box-shadow: 0 0 25px rgba(56, 189, 248, 0.8); }
             100% { transform: scale(1); box-shadow: 0 0 10px rgba(56, 189, 248, 0.4); }
         }
+
+        /* အရေးပေါ် ဆက်သွယ်ရန် အပိုင်း (Viber, Messenger ပုံသေးများ) */
+        .contact-container { margin-top: 10px; }
+        .contact-title { font-size: 12px; color: #94a3b8; margin-bottom: 6px; }
+        .contact-icons { display: flex; justify-content: center; gap: 12px; align-items: center; }
+        .contact-icon-link img {
+            width: 32px; height: 32px; border-radius: 50%; object-fit: cover;
+            border: 1px solid #334155; transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .contact-icon-link img:hover { transform: scale(1.1); box-shadow: 0 0 10px rgba(56, 189, 248, 0.5); }
 
         h2 { margin-bottom: 20px; font-size: 1.4rem; text-align: center;}
 
@@ -74,7 +84,7 @@
         }
         .buy-btn:hover { background-color: #0284c7; }
 
-        /* ---- Movie Grid Style (ကွန်ပျူတာရော ဖုန်းမှာပါ ၃ ခုတစ်တန်း) ---- */
+        /* ---- Movie Grid Style ---- */
         .movie-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
         .movie-card {
             background-color: #1e293b; border-radius: 12px; padding: 8px; text-align: center;
@@ -82,8 +92,6 @@
         }
         .movie-card img { width: 100%; aspect-ratio: 2/3; object-fit: cover; border-radius: 8px; margin-bottom: 8px; }
         .movie-card h4 { margin: 0 0 8px 0; font-size: 12px; color: #f8fafc; flex-grow: 1; }
-        
-        /* ဇာတ်ညွှန်းဖတ်ရန် ခလုတ်အသစ် */
         .story-btn {
             background-color: transparent; border: 1px solid #38bdf8; color: #38bdf8;
             padding: 6px 5px; border-radius: 15px; font-size: 11px; font-weight: bold;
@@ -110,22 +118,18 @@
         .modal-story { font-size: 14px; line-height: 1.6; margin: 0 0 20px 0; color: #cbd5e1; overflow-y: auto; }
         .modal-watch-btn {
             background-color: #f43f5e; color: white; border: none; padding: 12px 20px;
-            border-radius: 25px; cursor: pointer; font-size: 14px; font-weight: bold; width: 100%;
-            transition: 0.2s;
+            border-radius: 25px; cursor: pointer; font-size: 14px; font-weight: bold; width: 100%; transition: 0.2s;
         }
         .modal-watch-btn:hover { background-color: #e11d48; }
 
         .loading-text { text-align: center; color: #94a3b8; font-style: italic; margin-top: 20px;}
 
-        /* Mobile Responsive */
         @media (max-width: 500px) {
             .app-grid { grid-template-columns: repeat(2, 1fr); }
-            /* ဖုန်းမှာလည်း ဇာတ်ကား ၃ ခု တစ်တန်း ပေါ်မည် */
             .movie-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
             .movie-card { padding: 6px; }
             .movie-card h4 { font-size: 11px; }
             .story-btn { font-size: 10px; padding: 5px 2px; }
-            
             .plan-card { padding: 12px 15px; }
             .buy-btn { padding: 8px 15px; font-size: 13px;}
         }
@@ -133,9 +137,16 @@
 </head>
 <body>
 
+    <!-- Logo & Name & Emergency Contacts -->
     <div id="brand-section" class="brand-section">
         <img id="brand-logo" class="brand-logo" src="" alt="Logo">
         <p id="brand-name" class="brand-name"></p>
+        
+        <!-- အရေးပေါ် ဆက်သွယ်ရန် အကွက်ငယ် (Viber, Messenger ပုံသေးများ) -->
+        <div id="contact-container" class="contact-container" style="display:none;">
+            <div id="contact-title" class="contact-title"></div>
+            <div id="contact-icons" class="contact-icons"></div>
+        </div>
     </div>
 
     <div id="home-page">
@@ -160,7 +171,6 @@
         <div id="price-container"></div>
     </div>
 
-    <!-- ဇာတ်ညွှန်းဖတ်ရန် နှိပ်လျှင် ပေါ်လာမည့် Modal Popup Box -->
     <div id="movie-modal" class="modal-overlay" onclick="closeModal(event)">
         <div class="modal-box" onclick="event.stopPropagation()">
             <span class="modal-close" onclick="closeModal(event)">&times;</span>
@@ -171,7 +181,7 @@
     </div>
 
     <script>
-        const SHEET_ID = "13ubLHCnrnkn5e6n5DCZh5SwrHZEjCST9is-DfaenThk"; 
+        const SHEET_ID = "13ubLHCnrnkn5e6n5DCZh5SwrHzEjCST9is_DfaenThk"; 
         let globalSheetData = []; 
 
         function fetchSheetRaw(gid, callback) {
@@ -180,17 +190,48 @@
         }
 
         function initApp() {
+            // Privacy Tab (GID: 0) မှ Logo, Name နှင့် Contact များကို ဖတ်ရှုခြင်း
             fetchSheetRaw("0", function(data) {
                 if(data.length > 0) {
-                    let logoUrl = "", brandName = "";
+                    let logoUrl = "", brandName = "", contactTitle = "";
+                    let contacts = [];
+
                     data.forEach(row => {
                         if(row[0] === "main logo" && row[1]) logoUrl = row[1];
                         if(row[0] === "main Name" && row[1]) brandName = row[1];
+                        
+                        // A5 တွင် ခေါင်းစဉ်ရှိလျှင် ယူမည်၊ A6, A7 တွင် ပုံနှင့် လင့်ခ်များကို ယူမည်
+                        if(row[0] && row[0] !== "main logo" && row[0] !== "main Name") {
+                            if(!contactTitle && row[0].length > 0) contactTitle = row[0];
+                            if(row[1] && row[2]) {
+                                contacts.push({ name: row[0], img: row[1], link: row[2] });
+                            }
+                        }
                     });
+
                     if(logoUrl || brandName) {
                         document.getElementById('brand-section').style.display = 'block';
                         if(logoUrl) document.getElementById('brand-logo').src = logoUrl;
                         if(brandName) document.getElementById('brand-name').innerText = brandName;
+                    }
+
+                    // ဆက်သွယ်ရန် ပုံသေးလေးများ ထည့်သွင်းခြင်း
+                    if(contacts.length > 0) {
+                        document.getElementById('contact-container').style.display = 'block';
+                        if(contactTitle) document.getElementById('contact-title').innerText = contactTitle;
+                        
+                        const iconsContainer = document.getElementById('contact-icons');
+                        iconsContainer.innerHTML = '';
+                        
+                        contacts.forEach(c => {
+                            const a = document.createElement('a');
+                            a.className = 'contact-icon-link';
+                            a.href = c.link;
+                            a.target = '_blank';
+                            a.title = c.name;
+                            a.innerHTML = `<img src="${c.img}" alt="${c.name}" onerror="this.src='https://placehold.co/32x32/1e293b/94a3b8?text=${c.name.charAt(0)}'">`;
+                            iconsContainer.appendChild(a);
+                        });
                     }
                 }
             });
@@ -238,7 +279,7 @@
 
             fetchSheetRaw(sheetGid, function(data) {
                 document.getElementById('loading-detail').style.display = 'none';
-                if(data.length < 2) { priceContainer.innerHTML = '<p style="text-align:center; color:#94a3b8;">ဒေတာ မတင်ရသေးပါ။</p>'; return; }
+                if(data.length < 2) { priceContainer.innerHTML = '<p style="text-align:center; color:#94a3b8;">ယခု Server အတွက် ဈေးနှုန်းများ မတင်ရသေးပါ။</p>'; return; }
 
                 globalSheetData = data;
                 const headers = data[0]; 
@@ -291,7 +332,6 @@
             }
         };
 
-        // Modal Popup ပိတ်ရန် Function
         window.closeModal = function(event) {
             if(event) event.stopPropagation();
             document.getElementById('movie-modal').style.display = 'none';
@@ -326,14 +366,11 @@
                     items.forEach(item => {
                         const card = document.createElement('div');
                         card.className = 'movie-card';
-                        
-                        // HTML ကို အရင်တည်ဆောက်မည်
                         card.innerHTML = `
                             <img src="${item.val2}" alt="${item.title}" onerror="this.src='https://placehold.co/150x225/1e293b/94a3b8?text=No+Image'">
                             <h4>${item.title}</h4>
                         `;
                         
-                        // ဇာတ်ညွှန်းဖတ်ရန် Button ကို သီးသန့် Event Listener ဖြင့် တည်ဆောက်မည် (Quote ပြဿနာမဖြစ်စေရန်)
                         const storyBtn = document.createElement('button');
                         storyBtn.className = 'story-btn';
                         storyBtn.innerText = 'ဇာတ်ညွှန်းဖတ်ရန်';
