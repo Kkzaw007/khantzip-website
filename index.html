@@ -14,7 +14,7 @@
             padding: 20px;
         }
 
-        /* ---- Brand Logo & Name & Contact Icons ---- */
+        /* ---- Brand Logo & Name ---- */
         .brand-section { text-align: center; margin-bottom: 30px; display: none; }
         .brand-logo {
             width: 90px; height: 90px; border-radius: 50%; object-fit: cover;
@@ -27,7 +27,7 @@
             100% { transform: scale(1); box-shadow: 0 0 10px rgba(56, 189, 248, 0.4); }
         }
 
-        /* အရေးပေါ် ဆက်သွယ်ရန် အပိုင်း (Viber, Messenger ပုံသေးများ) */
+        /* အရေးပေါ် ဆက်သွယ်ရန် အကွက်ငယ် */
         .contact-container { margin-top: 10px; }
         .contact-title { font-size: 12px; color: #94a3b8; margin-bottom: 6px; }
         .contact-icons { display: flex; justify-content: center; gap: 12px; align-items: center; }
@@ -57,6 +57,26 @@
         }
         .detail-header { text-align: center; margin-bottom: 20px; }
         .detail-header img { width: 90px; border-radius: 20px; margin-bottom: 15px; }
+
+        /* ---- RGB Animated Notice Text (ဈေးနှုန်းများ မပေါ်မီ ပြသရန်) ---- */
+        .rgb-notice {
+            text-align: center;
+            font-size: 15px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            padding: 10px;
+            border-radius: 8px;
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid #334155;
+            /* RGB Animation Effect */
+            animation: rgbGlow 4s infinite linear;
+        }
+        @keyframes rgbGlow {
+            0% { color: #f43f5e; text-shadow: 0 0 8px rgba(244, 63, 94, 0.5); }
+            33% { color: #38bdf8; text-shadow: 0 0 8px rgba(56, 189, 248, 0.5); }
+            66% { color: #10b981; text-shadow: 0 0 8px rgba(16, 185, 129, 0.5); }
+            100% { color: #f43f5e; text-shadow: 0 0 8px rgba(244, 63, 94, 0.5); }
+        }
 
         /* ---- Server / Category Selection Tabs ---- */
         .server-selection-container { margin-bottom: 25px; display: none; }
@@ -142,7 +162,6 @@
         <img id="brand-logo" class="brand-logo" src="" alt="Logo">
         <p id="brand-name" class="brand-name"></p>
         
-        <!-- အရေးပေါ် ဆက်သွယ်ရန် အကွက်ငယ် (Viber, Messenger ပုံသေးများ) -->
         <div id="contact-container" class="contact-container" style="display:none;">
             <div id="contact-title" class="contact-title"></div>
             <div id="contact-icons" class="contact-icons"></div>
@@ -162,6 +181,9 @@
             <h2 id="detail-title">App Name</h2>
         </div>
         
+        <!-- RGB Notice Text နေရာ -->
+        <div id="rgb-notice" class="rgb-notice" style="display:none;"></div>
+
         <div id="server-selection-container" class="server-selection-container">
             <div class="server-label">Select Category</div>
             <div id="server-tabs" class="server-tabs"></div>
@@ -190,7 +212,6 @@
         }
 
         function initApp() {
-            // Privacy Tab (GID: 0) မှ Logo, Name နှင့် Contact များကို ဖတ်ရှုခြင်း
             fetchSheetRaw("0", function(data) {
                 if(data.length > 0) {
                     let logoUrl = "", brandName = "", contactTitle = "";
@@ -200,7 +221,6 @@
                         if(row[0] === "main logo" && row[1]) logoUrl = row[1];
                         if(row[0] === "main Name" && row[1]) brandName = row[1];
                         
-                        // A5 တွင် ခေါင်းစဉ်ရှိလျှင် ယူမည်၊ A6, A7 တွင် ပုံနှင့် လင့်ခ်များကို ယူမည်
                         if(row[0] && row[0] !== "main logo" && row[0] !== "main Name") {
                             if(!contactTitle && row[0].length > 0) contactTitle = row[0];
                             if(row[1] && row[2]) {
@@ -215,7 +235,6 @@
                         if(brandName) document.getElementById('brand-name').innerText = brandName;
                     }
 
-                    // ဆက်သွယ်ရန် ပုံသေးလေးများ ထည့်သွင်းခြင်း
                     if(contacts.length > 0) {
                         document.getElementById('contact-container').style.display = 'block';
                         if(contactTitle) document.getElementById('contact-title').innerText = contactTitle;
@@ -267,9 +286,11 @@
             const serverSelectionContainer = document.getElementById('server-selection-container');
             const serverTabs = document.getElementById('server-tabs');
             const priceContainer = document.getElementById('price-container');
+            const rgbNotice = document.getElementById('rgb-notice');
             
             serverSelectionContainer.style.display = 'none';
             serverTabs.innerHTML = ''; priceContainer.innerHTML = '';
+            rgbNotice.style.display = 'none'; rgbNotice.innerText = '';
             document.getElementById('loading-detail').style.display = 'block';
 
             if(sheetGid === "0") {
@@ -279,7 +300,32 @@
 
             fetchSheetRaw(sheetGid, function(data) {
                 document.getElementById('loading-detail').style.display = 'none';
-                if(data.length < 2) { priceContainer.innerHTML = '<p style="text-align:center; color:#94a3b8;">ယခု Server အတွက် ဈေးနှုန်းများ မတင်ရသေးပါ။</p>'; return; }
+                if(data.length < 1) { priceContainer.innerHTML = '<p style="text-align:center; color:#94a3b8;">ယခု Server အတွက် ဒေတာ မတင်ရသေးပါ။</p>'; return; }
+
+                // --- ဈေးစာရင်းဇယား မပေါ်မီ အပေါ်ဆုံးအကွက်များ (Row 0) တွင် စာသားရှိမရှိ ရှာဖွေပြီး RGB Notice အဖြစ် ပြသရန် ---
+                let noticeText = "";
+                if(data.length > 0) {
+                    for(let cell of data[0]) {
+                        if(cell && cell.trim() !== "" && isNaN(cell)) {
+                            // price, picture စသည့် သတ်မှတ်စာလုံးများ မဟုတ်မှသာ Notice အဖြစ် ယူမည်
+                            let low = cell.trim().toLowerCase();
+                            if(low !== "price" && low !== "picture" && low !== "story" && low !== "link" && low !== "next page") {
+                                noticeText = cell.trim();
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                if(noticeText !== "") {
+                    rgbNotice.innerText = noticeText;
+                    rgbNotice.style.display = 'block';
+                }
+
+                if(data.length < 2) { 
+                    if(noticeText === "") priceContainer.innerHTML = '<p style="text-align:center; color:#94a3b8;">ဒေတာ မတင်ရသေးပါ။</p>'; 
+                    return; 
+                }
 
                 globalSheetData = data;
                 const headers = data[0]; 
@@ -319,7 +365,7 @@
                     }
                     renderData(categories[0]); 
                 } else {
-                    priceContainer.innerHTML = '<p style="text-align:center; color:#94a3b8;">ဒေတာ ပုံစံမမှန်ကန်ပါ။</p>';
+                    if(noticeText === "") priceContainer.innerHTML = '<p style="text-align:center; color:#94a3b8;">ဒေတာ ပုံစံမမှန်ကန်ပါ။</p>';
                 }
             });
         }
@@ -339,7 +385,10 @@
 
         function renderData(categoryData) {
             const priceContainer = document.getElementById('price-container');
+            // RGB Notice ရှိပြီးသားဆိုလျှင် ဖျက်မပစ်ဘဲ ထားရှိရန်အတွက် အောက်ပါအတိုင်း ဇယားအကွက်များကို သီးသန့်ဆောက်မည်
+            let existingNotice = priceContainer.querySelector('.rgb-notice');
             priceContainer.innerHTML = '';
+            if(existingNotice) priceContainer.appendChild(existingNotice);
             
             let items = [];
             for(let r = 1; r < globalSheetData.length; r++) {
@@ -409,7 +458,10 @@
                     });
                 }
             } else {
-                priceContainer.innerHTML = '<p style="text-align:center; color:#94a3b8;">ယခု Server အတွက် ဒေတာ မတင်ရသေးပါ။</p>';
+                let emptyMsg = document.createElement('p');
+                emptyMsg.style.cssText = "text-align:center; color:#94a3b8; margin-top:15px;";
+                emptyMsg.innerText = "ယခုအမျိုးအစားအတွက် ဒေတာ မတင်ရသေးပါ။";
+                priceContainer.appendChild(emptyMsg);
             }
         }
 
